@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}Kube Hunter - Management{% endblock %}
+
+{% block nav_item_management_class %}active{% endblock %}
+
+{% block content %}
+
+<p>
+This page will let you configure your cloud connections and what scans you want for each cloud + the schedule
+</p>
+
+<h1>Cloud setup</h1>
+
+<p>
+Setup Cloud access and other details here
+</p>
+
+<h1>Commands</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<td>Command</td>
+			<td>Description</td>
+			<td>Action</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for command in commands %}
+		<tr>
+			<td>{{ command.name }}</td>
+			<td>{{ command.description }}</td>
+			<td><a class="btn btn-warning" href="/management/command/type/{{ command.type }}">Run</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<h1>Schedules</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<td>Schedule</td>
+			<td>Description</td>
+			<td>Action</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for command in commands %}
+		<tr>
+			<td>{{ command.name }}</td>
+			<td>schedule {{ command.description }}</td>
+			<td><a class="btn btn-success" href="/management/schedule/type/{{ command.type }}">Setup</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+
+{% endblock %}

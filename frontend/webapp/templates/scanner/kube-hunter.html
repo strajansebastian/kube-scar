@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Kube Hunter{% endblock %}
+
+{% block nav_item_scanner_class %}active{% endblock %}
+
+{% block content %}
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Scan Date</th>
+			<th>Scan Duration</th>
+			<th>Status</th>
+			<th>Results</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for scan in scans %}
+		<tr>
+			<td style="vertical-align: middle;">{{ scan.time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+			<td style="vertical-align: middle;">{{ scan.duration }}</td>
+			<td style="vertical-align: middle;">{{ scan.status }}</td>
+			<td style="vertical-align: middle;">{{ scan.result_no }}</td>
+			<td style="vertical-align: middle;">
+				<a class="btn btn-info {% if scan.result_no < 1 %} disabled {% endif %}" href='/scanner/kube-hunter/scan/{{ scan.scan_id }}'>View</a>
+				{% if scan.status != 'Done' %}
+				<a class="btn btn-danger" href='/scanner/kube-hunter/scan/{{ scan.scan_id }}/action/stop'>Stop</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

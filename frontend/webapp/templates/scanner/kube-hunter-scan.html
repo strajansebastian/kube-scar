@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}Kube Hunter{% endblock %}
+
+{% block nav_item_scanner_class %}active{% endblock %}
+
+{% block content %}
+
+<h1>General information</h1>
+<h2>Scan details</h2>
+<table class="table">
+	<tbody>
+		<tr>
+			<th>Scan Date</th>
+			<td>{{ scan.time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+		</tr>
+		<tr>
+			<th>Scan Duration</th>
+			<td>{{ scan.duration }}</td>
+		</tr>
+		<tr>
+			<th>Status</th>
+			<td>{{ scan.status }}</td>
+		</tr>
+		<tr>
+			<th>Results</th>
+			<td>{{ scan.result_no }}</td>
+		</tr>
+
+		{% if scan.status != 'Done' %}
+		<tr>
+			<th>Actions</th>
+			<td>
+				<a class="btn btn-danger" href='/scanner/kube-hunter/scan/{{ scan.scan_id }}/action/stop'>Stop</a>
+			</td>
+		</tr>
+		{% endif %}
+	</tbody>
+</table>
+
+<h2>Cluster information</h2>
+{% for cluster in clusters %}
+
+<br>
+<h3 {% if cluster.result.nodes|length == 0 and cluster.result.services|length == 0 and cluster.result.vulnerabilities|length == 0 %} class="alert alert-success" {% else %} class="alert alert-warning" {% endif %}>
+	Cluster - {{ cluster.cluster_id }}
+</h3>
+<table class="table">
+	<thead >
+		<tr>
+			<th>Nodes</th>
+			<th>Services</th>
+			<th>Vulnerabilities</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				{% for item in cluster.result.nodes %}
+				<table class="table">
+					<tbody>
+						{% for key, value in item.items() %}
+						<tr>
+							<th>{{ key|capitalize }}</th>
+							<td>{{ value }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% endfor %}
+			</td>
+			<td>
+				{% for item in cluster.result.services %}
+				<table class="table">
+					<tbody>
+						{% for key, value in item.items() %}
+						<tr>
+							<th>{{ key|capitalize }}</th>
+							<td>{{ value }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% endfor %}
+			</td>
+			<td>
+				{% for item in cluster.result.vulnerabilities %}
+				<table class="table">
+					<tbody>
+						{% for key, value in item.items() %}
+						<tr>
+							<th>{{ key|capitalize }}</th>
+							<td>{{ value }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% endfor %}
+			</td>
+		</tr>
+	<tbody>
+</table>
+
+{% endfor %}
+
+
+{% endblock %}
